@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Kimetsu no Yaiba',
                 'Your Name',
                 'Naruto',
+                'Shingeki no Kyojin',
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

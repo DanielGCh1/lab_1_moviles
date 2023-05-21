@@ -107,7 +107,7 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
       return Center(child: CircularProgressIndicator());
     } else {
       return Scaffold(
-        appBar: AppBar(title: Text("Animes por género")),
+        appBar: AppBar(title: Text('Genero: ${widget.genre}')),
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: ListView.builder(
