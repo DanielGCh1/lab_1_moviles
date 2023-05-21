@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'your_character_list_widget.dart';
 
 class Anime {
   final String title;
@@ -91,6 +92,15 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
     }
   }
 
+  void navigateToCharacterList(String animeTitle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CharacterListWidget(animeTitle: animeTitle),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (animeList.isEmpty) {
@@ -104,18 +114,21 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
             itemCount: animeList.length,
             itemBuilder: (context, index) {
               final anime = animeList[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(anime.coverImage),
-                ),
-                title: Text(anime.title),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Episodios: ${anime.episodes}"),
-                    Text("Estado: ${anime.status}"),
-                    Text("Puntuación promedio: ${anime.averageScore}"),
-                  ],
+              return GestureDetector(
+                onTap: () => navigateToCharacterList(anime.title),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(anime.coverImage),
+                  ),
+                  title: Text(anime.title),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Episodios: ${anime.episodes}"),
+                      Text("Estado: ${anime.status}"),
+                      Text("Puntuación promedio: ${anime.averageScore}"),
+                    ],
+                  ),
                 ),
               );
             },
