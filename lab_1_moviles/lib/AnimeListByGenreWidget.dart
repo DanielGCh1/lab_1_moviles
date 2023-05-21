@@ -4,13 +4,17 @@ import 'package:http/http.dart' as http;
 
 class Anime {
   final String title;
-  final List<String> genres;
   final String coverImage;
+  final int episodes;
+  final String status;
+  final double averageScore;
 
   Anime({
     required this.title,
-    required this.genres,
     required this.coverImage,
+    required this.episodes,
+    required this.status,
+    required this.averageScore,
   });
 }
 
@@ -42,10 +46,12 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
           title {
             romaji
           }
-          genres
           coverImage {
             large
           }
+          episodes
+          status
+          averageScore
         }
       }
     }
@@ -65,13 +71,17 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
 
       for (final anime in media) {
         final String title = anime['title']['romaji'];
-        final List<String> genres = List<String>.from(anime['genres']);
         final String coverImage = anime['coverImage']['large'];
+        final int episodes = anime['episodes'];
+        final String status = anime['status'];
+        final double averageScore = anime['averageScore']?.toDouble() ?? 0.0;
 
         animeList.add(Anime(
           title: title,
-          genres: genres,
           coverImage: coverImage,
+          episodes: episodes,
+          status: status,
+          averageScore: averageScore,
         ));
       }
 
@@ -101,7 +111,11 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
                 title: Text(anime.title),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: anime.genres.map((genre) => Text(genre)).toList(),
+                  children: [
+                    Text("Episodios: ${anime.episodes}"),
+                    Text("Estado: ${anime.status}"),
+                    Text("Puntuación promedio: ${anime.averageScore}"),
+                  ],
                 ),
               );
             },
