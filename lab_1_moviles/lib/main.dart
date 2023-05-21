@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lab_1_moviles/your_anime_details_widget.dart';
 
+import 'AnimeListByGenreWidget.dart'; // Importar el nuevo archivo
+
 void main() {
   runApp(MyApp());
 }
@@ -27,6 +29,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedAnime;
+  String? selectedGenre;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               items: <String>[
-                'Attack on Titan',
+                'Kimetsu no Yaiba',
                 'Your Name',
-                'One Piece',
+                'Naruto',
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -71,6 +74,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
               child: Text('Ver detalles del anime seleccionado'),
+            ),
+            DropdownButton<String>(
+              value: selectedGenre,
+              hint: Text('Seleccione un genero'),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedGenre = newValue;
+                });
+              },
+              items: <String>[
+                'Action',
+                'Comedy',
+                'Adventure',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AnimeListByGenreWidget(genre: selectedGenre),
+                  ),
+                );
+              },
+              child: Text('Ver lista de animes por género'),
             ),
           ],
         ),

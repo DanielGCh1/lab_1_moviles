@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 
 class Anime {
   final String title;
-  final String description;
   final String startDate;
   final String endDate;
   final int episodes;
@@ -17,7 +16,6 @@ class Anime {
 
   Anime({
     required this.title,
-    required this.description,
     required this.startDate,
     required this.endDate,
     required this.episodes,
@@ -32,12 +30,14 @@ class Anime {
 
 class Character {
   final String name;
-  final String role;
+  final String gender;
+  final String dateOfBirth;
   final String image;
 
   Character({
     required this.name,
-    required this.role,
+    required this.gender,
+    required this.dateOfBirth,
     required this.image,
   });
 }
@@ -69,7 +69,6 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
           english
           native
         }
-        description
         startDate {
           year
           month
@@ -94,7 +93,11 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
               name {
                 full
               }
-              description
+              gender
+              dateOfBirth {
+                month
+                day
+              }
               image {
                 large
               }
@@ -119,19 +122,46 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
 
       // Obtener la lista de personajes
       final List<dynamic> characterEdges = media['characters']['edges'];
+      for (int i = 0; i < 3 && i < characterEdges.length; i++) {
+        final character = characterEdges[i]['node'];
+        final String name = character['name']['full'];
+        final String? gender = character['gender'];
+        final Map<String, dynamic> dateOfBirth = character['dateOfBirth'];
+        final int? month = dateOfBirth['month'];
+        final int? day = dateOfBirth['day'];
+        final String image = character['image']['large'];
+
+        characters.add(Character(
+          name: name,
+          gender: gender ?? 'Desconocido',
+          dateOfBirth:
+              month != null && day != null ? '$month-$day' : 'Desconocido',
+          image: image,
+        ));
+      }
+      /*
       for (final edge in characterEdges) {
         final character = edge['node'];
         final String name = character['name']['full'];
-        final String role = character['description'];
+        final String? gender = character['gender'];
+        final Map<String, dynamic> dateOfBirth = character['dateOfBirth'];
+        final int? month = dateOfBirth['month'];
+        final int? day = dateOfBirth['day'];
         final String image = character['image']['large'];
 
-        characters.add(Character(name: name, role: role, image: image));
+        characters.add(Character(
+          name: name,
+          gender: gender ?? 'Desconocido',
+          dateOfBirth:
+              month != null && day != null ? '$month-$day' : 'Desconocido',
+          image: image,
+        ));
       }
+      */
 
       setState(() {
         anime = Anime(
           title: media['title']['romaji'],
-          description: media['description'],
           startDate:
               '${media['startDate']['year']}-${media['startDate']['month']}-${media['startDate']['day']}',
           endDate:
@@ -160,12 +190,11 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
           child: ListView(
             children: [
               Image.network(anime.coverImage),
-              SizedBox(height: 16.0),
+              SizedBox(height: 5.0),
               Text(
-                'Description: ${anime.description}',
-                style: TextStyle(fontSize: 16.0),
+                'Informacion:',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
               Text('Start Date: ${anime.startDate}'),
               Text('End Date: ${anime.endDate}'),
               Text('Episodes: ${anime.episodes}'),
@@ -175,10 +204,10 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
               Text('Average Score: ${anime.averageScore}'),
               SizedBox(height: 16.0),
               Text(
-                'Characters:',
+                'Personajes:',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 5.0),
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -190,7 +219,15 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
                       backgroundImage: NetworkImage(character.image),
                     ),
                     title: Text(character.name),
-                    subtitle: Text(character.role),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (character.gender != null)
+                          Text('Gender: ${character.gender}'),
+                        if (character.dateOfBirth != null)
+                          Text('Date of Birth: ${character.dateOfBirth}'),
+                      ],
+                    ),
                   );
                 },
               ),
