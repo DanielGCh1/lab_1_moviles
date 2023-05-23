@@ -136,36 +136,36 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
         final List<dynamic> characterEdges = media['characters']['edges'];
         for (final edge in characterEdges) {
           final character = edge['node'];
-          final String name = character['name']['full'];
+          final String? name = character['name']['full'] ?? "";
           final String? gender = character['gender'];
           final Map<String, dynamic> dateOfBirth = character['dateOfBirth'];
-          final int? month = dateOfBirth['month'];
-          final int? day = dateOfBirth['day'];
-          final String image = character['image']['large'];
+          final int? month = dateOfBirth['month'] ?? 0;
+          final int? day = dateOfBirth['day'] ?? 0;
+          final String? image = character['image']['large'] ?? "";
 
           characters.add(Character(
-            name: name,
+            name: name ?? "",
             gender: gender ?? 'Desconocido',
             dateOfBirth:
                 month != null && day != null ? '$month-$day' : 'Desconocido',
-            image: image,
+            image: image ?? "",
           ));
         }
 
         setState(() {
           anime = Anime(
-            title: media['title']['romaji'],
+            title: media['title']['romaji'] ?? "",
             startDate:
                 '${media['startDate']['year']}-${media['startDate']['month']}-${media['startDate']['day']}',
             endDate:
                 '${media['endDate']['year']}-${media['endDate']['month']}-${media['endDate']['day']}',
-            episodes: media['episodes'],
-            duration: media['duration'],
-            status: media['status'],
-            genres: List<String>.from(media['genres']),
-            averageScore: media['averageScore'].toDouble(),
-            coverImage: media['coverImage']['large'],
-            characters: characters,
+            episodes: media['episodes'] ?? 0,
+            duration: media['duration'] ?? 0,
+            status: media['status'] ?? "",
+            genres: List<String>.from(media['genres']) ?? [],
+            averageScore: media['averageScore'].toDouble() ?? 0,
+            coverImage: media['coverImage']['large'] ?? "",
+            characters: characters ?? [],
           );
         });
       }
