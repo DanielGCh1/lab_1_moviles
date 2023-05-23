@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'your_character_list_widget.dart';
 
+import 'package:lab_1_moviles/utils/queries.dart';
+
 class Anime {
   final String title;
   final String coverImage;
@@ -40,7 +42,9 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
   }
 
   Future<void> fetchAnimeList() async {
-    final query = '''
+    final query = fetchAnimeListQuery(selectedGenre);
+    /*
+    '''
     query {
       Page {
         media(type: ANIME, genre: "${selectedGenre ?? ""}") {
@@ -56,7 +60,7 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
         }
       }
     }
-    ''';
+    ''';*/
 
     final response = await http.post(
       Uri.parse('https://graphql.anilist.co/'),

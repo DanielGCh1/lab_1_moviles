@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lab_1_moviles/utils/queries.dart';
 
 class Anime {
   final String title;
@@ -71,7 +72,9 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
   }
 
   void fetchAnimeDetails(String title) {
-    final query = '''
+    final query = fetchAnimeDetailsQuery(title);
+    /*
+    '''
     query {
       Media(search: "$title", type: ANIME) {
         title {
@@ -116,7 +119,7 @@ class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
         }
       }
     }
-    ''';
+    ''';*/
 
     http
         .post(Uri.parse('https://graphql.anilist.co/'),
