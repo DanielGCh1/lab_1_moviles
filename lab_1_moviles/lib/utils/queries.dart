@@ -66,6 +66,23 @@ String fetchAnimeDetailsQuery(String? title) => '''
     }
     ''';
 
+String fetchCharacterList(String? animeTitle) => '''
+query($animeTitle: String!) {
+        Media(search: \$animeTitle, type: ANIME) {
+          characters {
+            nodes {
+              name {
+                full
+              }
+              image {
+                large
+              }
+            }
+          }
+        }
+      }
+''';
+
 Future<List<String>> fetchGenreCollection() async {
   final query = '''
   query {

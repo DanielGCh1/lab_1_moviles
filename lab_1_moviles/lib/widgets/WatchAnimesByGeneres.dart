@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lab_1_moviles/AnimeListByGenreWidget.dart';
+import 'package:lab_1_moviles/widgets/AnimeListByGenre.dart';
 
 //ignore: must_be_immutable
 class WatchAnimesByGeneres extends StatelessWidget {
@@ -17,7 +17,7 @@ class WatchAnimesByGeneres extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  AnimeListByGenreWidget(genre: selectedGenre),
+                  AnimeListByGenre(genre: selectedGenre),
             ),
           );
         },

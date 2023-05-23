@@ -43,16 +43,16 @@ class Character {
   });
 }
 
-class AnimeDetailsWidget extends StatefulWidget {
+class AnimeDetails extends StatefulWidget {
   final String animeTitle;
 
-  AnimeDetailsWidget({required this.animeTitle});
+  AnimeDetails({required this.animeTitle});
 
   @override
   _AnimeDetailsWidgetState createState() => _AnimeDetailsWidgetState();
 }
 
-class _AnimeDetailsWidgetState extends State<AnimeDetailsWidget> {
+class _AnimeDetailsWidgetState extends State<AnimeDetails> {
   late Anime anime = Anime(
       title: '',
       startDate: '',

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lab_1_moviles/your_anime_details_widget.dart';
+import 'package:lab_1_moviles/widgets/AnimeDetails.dart';
 
 //ignore: must_be_immutable
 class WatchSelectedAnime extends StatelessWidget {
@@ -18,7 +18,7 @@ class WatchSelectedAnime extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AnimeDetailsWidget(
+                builder: (context) => AnimeDetails(
                   animeTitle: selectedAnime!,
                 ),
               ),

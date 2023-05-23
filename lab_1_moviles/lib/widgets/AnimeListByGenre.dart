@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'your_character_list_widget.dart';
+import 'package:lab_1_moviles/widgets/CharacterList.dart';
 
 import 'package:lab_1_moviles/utils/queries.dart';
 
@@ -21,16 +21,16 @@ class Anime {
   });
 }
 
-class AnimeListByGenreWidget extends StatefulWidget {
+class AnimeListByGenre extends StatefulWidget {
   final String? genre;
 
-  AnimeListByGenreWidget({required this.genre});
+  AnimeListByGenre({required this.genre});
 
   @override
   _AnimeListByGenreWidgetState createState() => _AnimeListByGenreWidgetState();
 }
 
-class _AnimeListByGenreWidgetState extends State<AnimeListByGenreWidget> {
+class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
   late List<Anime> animeList = [];
   String? selectedGenre;
 

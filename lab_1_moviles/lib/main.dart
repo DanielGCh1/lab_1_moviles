@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:lab_1_moviles/your_anime_details_widget.dart';
-import 'AnimeListByGenreWidget.dart'; // Importar el nuevo archivo
+import 'package:lab_1_moviles/widgets/AnimeDetails.dart';
+import 'package:lab_1_moviles/widgets/AnimeListByGenre.dart'; // Importar el nuevo archivo
 import 'package:lab_1_moviles/widgets/DropDownList.dart';
 
 import 'package:lab_1_moviles/utils/queries.dart';
