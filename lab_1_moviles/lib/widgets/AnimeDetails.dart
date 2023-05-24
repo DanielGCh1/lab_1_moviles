@@ -72,55 +72,7 @@ class _AnimeDetailsWidgetState extends State<AnimeDetails> {
   }
 
   void fetchAnimeDetails(String title) {
-    final query = fetchAnimeDetailsQuery(title);
-    /*
-    '''
-    query {
-      Media(search: "$title", type: ANIME) {
-        title {
-          romaji
-          english
-          native
-        }
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
-        }
-        episodes
-        duration
-        status
-        genres
-        averageScore
-        coverImage {
-          large
-        }
-        characters {
-          edges {
-            node {
-              name {
-                full
-              }
-              gender
-              dateOfBirth {
-                month
-                day
-              }
-              image {
-                large
-              }
-            }
-          }
-        }
-      }
-    }
-    ''';*/
-
+    final query = fetchAnimeDetailsQuery(title);//query
     http
         .post(Uri.parse('https://graphql.anilist.co/'),
             headers: {'Content-Type': 'application/json'},

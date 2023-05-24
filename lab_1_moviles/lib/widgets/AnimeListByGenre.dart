@@ -42,25 +42,7 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
   }
 
   Future<void> fetchAnimeList() async {
-    final query = fetchAnimeListQuery(selectedGenre);
-    /*
-    '''
-    query {
-      Page {
-        media(type: ANIME, genre: "${selectedGenre ?? ""}") {
-          title {
-            romaji
-          }
-          coverImage {
-            large
-          }
-          episodes
-          status
-          averageScore
-        }
-      }
-    }
-    ''';*/
+    final query = fetchAnimeListQuery(selectedGenre);//query
 
     final response = await http.post(
       Uri.parse('https://graphql.anilist.co/'),
