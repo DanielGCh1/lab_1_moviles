@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../utils/queries.dart';
 
 class Character {
   final String name;
@@ -28,23 +29,8 @@ class _CharacterListWidgetState extends State<CharacterListWidget> {
   }
 
   Future<void> fetchCharacterList() async {
-    final query = '''
-      query(\$animeTitle: String!) {
-        Media(search: \$animeTitle, type: ANIME) {
-          characters {
-            nodes {
-              name {
-                full
-              }
-              image {
-                large
-              }
-            }
-          }
-        }
-      }
-    ''';
-
+    final query = fetchCharacterListQuery(
+        widget.animeTitle); // Utiliza la consulta desde queries.dart
     final variables = {
       'animeTitle': widget.animeTitle,
     };

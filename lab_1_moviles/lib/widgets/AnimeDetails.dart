@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lab_1_moviles/utils/queries.dart';
 
 class Anime {
@@ -13,7 +12,7 @@ class Anime {
   final List<String> genres;
   final double averageScore;
   final String coverImage;
-  final List<Character> characters; // Lista de personajes
+  final List<Character> characters;
 
   Anime({
     required this.title,
@@ -49,11 +48,16 @@ class AnimeDetails extends StatefulWidget {
   AnimeDetails({required this.animeTitle});
 
   @override
-  _AnimeDetailsWidgetState createState() => _AnimeDetailsWidgetState();
+  _AnimeDetailsState createState() => _AnimeDetailsState();
 }
 
-class _AnimeDetailsWidgetState extends State<AnimeDetails> {
-  late Anime anime = Anime(
+class _AnimeDetailsState extends State<AnimeDetails> {
+  late Anime anime;
+
+  @override
+  void initState() {
+    super.initState();
+    anime = Anime(
       title: '',
       startDate: '',
       endDate: '',
@@ -63,65 +67,53 @@ class _AnimeDetailsWidgetState extends State<AnimeDetails> {
       genres: [],
       averageScore: 0,
       coverImage: '',
-      characters: []);
-
-  @override
-  void initState() {
+      characters: [],
+    );
     fetchAnimeDetails(widget.animeTitle);
-    super.initState();
   }
 
-  void fetchAnimeDetails(String title) {
-    final query = fetchAnimeDetailsQuery(title);//query
-    http
-        .post(Uri.parse('https://graphql.anilist.co/'),
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'query': query}))
-        .then((value) {
-      if (value.statusCode == 200) {
-        final data = json.decode(value.body);
-        final media = data['data']['Media'];
+  void fetchAnimeDetails(String title) async {
+    final response = await sendGraphQLRequest(fetchAnimeDetailsQuery(title));
 
-        final List<Character> characters = [];
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final media = data['data']['Media'];
 
-        // Obtener la lista de personajes
-        final List<dynamic> characterEdges = media['characters']['edges'];
-        for (final edge in characterEdges) {
-          final character = edge['node'];
-          final String? name = character['name']['full'] ?? "";
-          final String? gender = character['gender'];
-          final Map<String, dynamic> dateOfBirth = character['dateOfBirth'];
-          final int? month = dateOfBirth['month'] ?? 0;
-          final int? day = dateOfBirth['day'] ?? 0;
-          final String? image = character['image']['large'] ?? "";
+      final List<Character> characters =
+          (media['characters']['edges'] as List).map((edge) {
+        final character = edge['node'];
+        final String name = character['name']['full'] ?? "";
+        final String gender = character['gender'] ?? 'Desconocido';
+        final Map<String, dynamic> dateOfBirth = character['dateOfBirth'];
+        final int month = dateOfBirth['month'] ?? 0;
+        final int day = dateOfBirth['day'] ?? 0;
+        final String image = character['image']['large'] ?? "";
 
-          characters.add(Character(
-            name: name ?? "",
-            gender: gender ?? 'Desconocido',
-            dateOfBirth:
-                month != null && day != null ? '$month-$day' : 'Desconocido',
-            image: image ?? "",
-          ));
-        }
+        return Character(
+          name: name,
+          gender: gender,
+          dateOfBirth: (month != 0 && day != 0) ? '$month-$day' : 'Desconocido',
+          image: image,
+        );
+      }).toList();
 
-        setState(() {
-          anime = Anime(
-            title: media['title']['romaji'] ?? "",
-            startDate:
-                '${media['startDate']['year']}-${media['startDate']['month']}-${media['startDate']['day']}',
-            endDate:
-                '${media['endDate']['year']}-${media['endDate']['month']}-${media['endDate']['day']}',
-            episodes: media['episodes'] ?? 0,
-            duration: media['duration'] ?? 0,
-            status: media['status'] ?? "",
-            genres: List<String>.from(media['genres']) ?? [],
-            averageScore: media['averageScore'].toDouble() ?? 0,
-            coverImage: media['coverImage']['large'] ?? "",
-            characters: characters ?? [],
-          );
-        });
-      }
-    });
+      setState(() {
+        anime = Anime(
+          title: media['title']['romaji'] ?? "",
+          startDate:
+              '${media['startDate']['year']}-${media['startDate']['month']}-${media['startDate']['day']}',
+          endDate:
+              '${media['endDate']['year']}-${media['endDate']['month']}-${media['endDate']['day']}',
+          episodes: media['episodes'] ?? 0,
+          duration: media['duration'] ?? 0,
+          status: media['status'] ?? "",
+          genres: List<String>.from(media['genres']) ?? [],
+          averageScore: media['averageScore'].toDouble() ?? 0,
+          coverImage: media['coverImage']['large'] ?? "",
+          characters: characters,
+        );
+      });
+    }
   }
 
   @override
@@ -140,13 +132,13 @@ class _AnimeDetailsWidgetState extends State<AnimeDetails> {
               'Informacion:',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            Text('Start Date: ${anime.startDate}'),
-            Text('End Date: ${anime.endDate}'),
-            Text('Episodes: ${anime.episodes}'),
-            Text('Duration: ${anime.duration} minutes'),
-            Text('Status: ${anime.status}'),
-            Text('Genres: ${anime.genres.join(", ")}'),
-            Text('Average Score: ${anime.averageScore}'),
+            Text('Fecha Inicio: ${anime.startDate}'),
+            Text('Fecha Finalizacion: ${anime.endDate}'),
+            Text('Episodios: ${anime.episodes}'),
+            Text('Duracion: ${anime.duration} minutes'),
+            Text('Estado: ${anime.status}'),
+            Text('Generos: ${anime.genres.join(", ")}'),
+            Text('Calificacion: ${anime.averageScore}'),
             SizedBox(height: 16.0),
             Text(
               'Personajes:',
@@ -167,9 +159,9 @@ class _AnimeDetailsWidgetState extends State<AnimeDetails> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (character.gender != null)
+                      if (character.gender != 'Desconocido')
                         Text('Gender: ${character.gender}'),
-                      if (character.dateOfBirth != null)
+                      if (character.dateOfBirth != 'Desconocido')
                         Text('Date of Birth: ${character.dateOfBirth}'),
                     ],
                   ),

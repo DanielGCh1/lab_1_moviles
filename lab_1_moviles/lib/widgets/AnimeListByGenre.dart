@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lab_1_moviles/widgets/CharacterList.dart';
-
 import 'package:lab_1_moviles/utils/queries.dart';
 
 class Anime {
@@ -27,54 +25,55 @@ class AnimeListByGenre extends StatefulWidget {
   AnimeListByGenre({required this.genre});
 
   @override
-  _AnimeListByGenreWidgetState createState() => _AnimeListByGenreWidgetState();
+  _AnimeListByGenreState createState() => _AnimeListByGenreState();
 }
 
-class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
-  late List<Anime> animeList = [];
+class _AnimeListByGenreState extends State<AnimeListByGenre> {
+  late List<Anime> animeList;
   String? selectedGenre;
 
   @override
   void initState() {
     super.initState();
     selectedGenre = widget.genre;
+    animeList = [];
     fetchAnimeList();
   }
 
   Future<void> fetchAnimeList() async {
-    final query = fetchAnimeListQuery(selectedGenre);//query
+    final query = fetchAnimeListQuery(selectedGenre);
 
-    final response = await http.post(
-      Uri.parse('https://graphql.anilist.co/'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'query': query}),
-    );
+    try {
+      final response = await sendGraphQLRequest(query);
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final media = data['data']['Page']['media'];
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final media = data['data']['Page']['media'];
 
-      final List<Anime> animeList = [];
+        final List<Anime> fetchedAnimeList = [];
 
-      for (final anime in media) {
-        final String title = anime['title']['romaji'];
-        final String coverImage = anime['coverImage']['large'];
-        final int episodes = anime['episodes'];
-        final String status = anime['status'];
-        final double averageScore = anime['averageScore']?.toDouble() ?? 0.0;
+        for (final anime in media) {
+          final String title = anime['title']['romaji'];
+          final String coverImage = anime['coverImage']['large'];
+          final int episodes = anime['episodes'];
+          final String status = anime['status'];
+          final double averageScore = anime['averageScore']?.toDouble() ?? 0.0;
 
-        animeList.add(Anime(
-          title: title,
-          coverImage: coverImage,
-          episodes: episodes,
-          status: status,
-          averageScore: averageScore,
-        ));
+          fetchedAnimeList.add(Anime(
+            title: title,
+            coverImage: coverImage,
+            episodes: episodes,
+            status: status,
+            averageScore: averageScore,
+          ));
+        }
+
+        setState(() {
+          animeList = fetchedAnimeList;
+        });
       }
-
-      setState(() {
-        this.animeList = animeList;
-      });
+    } catch (error) {
+      print('Error fetching anime list: $error');
     }
   }
 
@@ -93,7 +92,7 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
       return Center(child: CircularProgressIndicator());
     } else {
       return Scaffold(
-        appBar: AppBar(title: Text('Genero: ${widget.genre}')),
+        appBar: AppBar(title: Text('Género: ${widget.genre}')),
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: ListView.builder(
