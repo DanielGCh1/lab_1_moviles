@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lab_1_moviles/utils/queries.dart';
+import 'package:lab_1_moviles/utils/Queries.dart';
 
 import '../widgets/AnimeListByGenre.dart';
 

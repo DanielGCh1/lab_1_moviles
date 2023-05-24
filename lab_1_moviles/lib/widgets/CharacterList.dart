@@ -1,14 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../utils/queries.dart';
+import 'Models.dart';
+import '../utils/Queries.dart';
 
-class Character {
-  final String name;
-  final String photoUrl;
-
-  Character({required this.name, required this.photoUrl});
-}
 
 class CharacterListWidget extends StatefulWidget {
   final String animeTitle;

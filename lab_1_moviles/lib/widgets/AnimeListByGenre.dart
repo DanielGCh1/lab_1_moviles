@@ -1,23 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lab_1_moviles/widgets/CharacterList.dart';
-import 'package:lab_1_moviles/utils/queries.dart';
-
-class Anime {
-  final String title;
-  final String coverImage;
-  final int episodes;
-  final String status;
-  final double averageScore;
-
-  Anime({
-    required this.title,
-    required this.coverImage,
-    required this.episodes,
-    required this.status,
-    required this.averageScore,
-  });
-}
+import 'package:lab_1_moviles/utils/Queries.dart';
+import 'Models.dart';
+import '../utils/Api.dart';
 
 class AnimeListByGenre extends StatefulWidget {
   final String? genre;

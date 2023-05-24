@@ -1,5 +1,5 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'Api.dart';
 
 Future<List<String>> fetchGenreCollection() async {
   final query = '''
@@ -45,7 +45,7 @@ Future<List<String>> getListAnimesQuery() async {
     return [];
   }
 }
-
+/*
 Future<http.Response> sendGraphQLRequest(String query) async {
   final response = await http.post(
     Uri.parse('https://graphql.anilist.co/'),
@@ -53,7 +53,7 @@ Future<http.Response> sendGraphQLRequest(String query) async {
     body: json.encode({'query': query}),
   );
   return response;
-}
+}*/
 
 String fetchAnimeListQuery(String? selectedGenre) => '''
   query {

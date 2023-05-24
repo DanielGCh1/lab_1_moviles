@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:lab_1_moviles/utils/queries.dart';
+import 'package:lab_1_moviles/utils/Queries.dart';
+
+import '../utils/Api.dart';
 
 class Anime {
   final String title;
