@@ -42,6 +42,7 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
   }
 
   Future<void> fetchAnimeList() async {
+<<<<<<< Updated upstream
     final query = fetchAnimeListQuery(selectedGenre);
     /*
     '''
@@ -61,6 +62,9 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
       }
     }
     ''';*/
+=======
+    final query = fetchAnimeListQuery(selectedGenre); //query
+>>>>>>> Stashed changes
 
     final response = await http.post(
       Uri.parse('https://graphql.anilist.co/'),
@@ -118,11 +122,42 @@ class _AnimeListByGenreWidgetState extends State<AnimeListByGenre> {
             itemCount: animeList.length,
             itemBuilder: (context, index) {
               final anime = animeList[index];
-              return GestureDetector(
+              /*return GestureDetector(
                 onTap: () => navigateToCharacterList(anime.title),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(anime.coverImage),
+                  ),
+                  title: Text(anime.title),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Episodios: ${anime.episodes}"),
+                      Text("Estado: ${anime.status}"),
+                      Text("Puntuación promedio: ${anime.averageScore}"),
+                    ],
+                  ),
+                ),
+              );*/
+              return GestureDetector(
+                onTap: () => navigateToCharacterList(anime.title),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(10.0),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                    child: Container(
+                      width: 100,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(anime.coverImage),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
                   title: Text(anime.title),
                   subtitle: Column(

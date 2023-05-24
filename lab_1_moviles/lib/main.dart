@@ -19,8 +19,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Laboratorio #1',
       theme: ThemeData(
+<<<<<<< Updated upstream
         primarySwatch: Colors.indigo,
         scaffoldBackgroundColor: Colors.blueGrey, // Fondo púrpura
+=======
+        primarySwatch: Colors.cyan,
+        scaffoldBackgroundColor: Colors.white,
+>>>>>>> Stashed changes
       ),
       home: HomeScreen(),
       debugShowCheckedModeBanner: false, // Oculta el banner de "debug"
