@@ -121,7 +121,9 @@ class _AnimeDetailsState extends State<AnimeDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(anime.title)),
+      appBar: AppBar(
+        title: Text(anime.title),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
@@ -129,22 +131,23 @@ class _AnimeDetailsState extends State<AnimeDetails> {
             (anime.coverImage.isNotEmpty)
                 ? Image.network(anime.coverImage)
                 : SizedBox(height: 5.0),
-            SizedBox(height: 5.0),
+            SizedBox(height: 10.0),
             Text(
-              'Informacion:',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              'Información:',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-            Text('Fecha Inicio: ${anime.startDate}'),
-            Text('Fecha Finalizacion: ${anime.endDate}'),
-            Text('Episodios: ${anime.episodes}'),
-            Text('Duracion: ${anime.duration} minutes'),
-            Text('Estado: ${anime.status}'),
-            Text('Generos: ${anime.genres.join(", ")}'),
-            Text('Calificacion: ${anime.averageScore}'),
+            SizedBox(height: 5.0),
+            _buildInfoRow('Fecha de inicio', anime.startDate),
+            _buildInfoRow('Fecha de finalización', anime.endDate),
+            _buildInfoRow('Episodios', anime.episodes.toString()),
+            _buildInfoRow('Duración', '${anime.duration} minutos'),
+            _buildInfoRow('Estado', anime.status),
+            _buildInfoRow('Géneros', anime.genres.join(", ")),
+            _buildInfoRow('Puntuación', anime.averageScore.toString()),
             SizedBox(height: 16.0),
             Text(
               'Personajes:',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5.0),
             ListView.builder(
@@ -153,25 +156,80 @@ class _AnimeDetailsState extends State<AnimeDetails> {
               itemCount: anime.characters.length,
               itemBuilder: (context, index) {
                 final character = anime.characters[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(character.image),
-                  ),
-                  title: Text(character.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (character.gender != 'Desconocido')
-                        Text('Gender: ${character.gender}'),
-                      if (character.dateOfBirth != 'Desconocido')
-                        Text('Date of Birth: ${character.dateOfBirth}'),
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
                     ],
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(10.0),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0),
+                      ),
+                      child: Container(
+                        width: 60,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(character.image),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      character.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 5.0),
+                        if (character.gender != null)
+                          Text('Gender: ${character.gender}'),
+                        SizedBox(height: 2.0),
+                        if (character.dateOfBirth != null)
+                          Text('Date of Birth: ${character.dateOfBirth}'),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              '$label:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(value),
+          ),
+        ],
       ),
     );
   }

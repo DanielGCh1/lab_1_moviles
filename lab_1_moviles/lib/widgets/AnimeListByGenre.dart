@@ -88,8 +88,22 @@ class _AnimeListByGenreState extends State<AnimeListByGenre> {
               return GestureDetector(
                 onTap: () => navigateToCharacterList(anime.title),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(anime.coverImage),
+                  contentPadding: EdgeInsets.all(10.0),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                    child: Container(
+                      width: 100,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(anime.coverImage),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
                   title: Text(anime.title),
                   subtitle: Column(

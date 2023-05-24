@@ -12,10 +12,26 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('G2 ANIME'),
           bottom: TabBar(
+            labelColor: Colors.white,
             tabs: [
-              Tab(text: 'Inicio'),
-              Tab(text: 'Anime'),
-              Tab(text: 'Géneros'),
+              Tab(
+                child: Text(
+                  'Inicio',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ), // Establece el grosor de la fuente y el tamaño
+              ),
+              Tab(
+                child: Text(
+                  'Animes',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ), // Establece el grosor de la fuente y el tamaño
+              ),
+              Tab(
+                child: Text(
+                  'Géneros',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ), // Establece el grosor de la fuente y el tamaño
+              ),
             ],
           ),
         ),

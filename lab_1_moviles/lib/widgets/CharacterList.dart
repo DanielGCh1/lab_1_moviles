@@ -71,11 +71,55 @@ class _CharacterListWidgetState extends State<CharacterListWidget> {
           itemCount: characterList.length,
           itemBuilder: (context, index) {
             final character = characterList[index];
-            return ListTile(
+            /* return ListTile(
               leading: CircleAvatar(
                 backgroundImage: NetworkImage(character.photoUrl),
               ),
               title: Text(character.name),
+            );*/
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white,
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.all(10.0),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                  ),
+                  child: Container(
+                    width: 60,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(character.photoUrl),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                title: Text(
+                  character.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5.0),
+                    //Text(character.name),
+                  ],
+                ),
+              ),
             );
           },
         ),
